@@ -3,15 +3,41 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-/* Your existing styles... */
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
 
-/* Add a play button style */
-.play-button {
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* Caption style */
+.caption {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
+  bottom: 5%;
+  left: 0;
+  width: 100%;
+  background-color: transparent; /* Remove the shaded background */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 400%; /* Smaller font size */
+  font-weight: bold; /* Make the caption bold */
+}
+
+/* Second caption line style */
+.second-caption {
+  font-size: 0.8em; /* Smaller font size for the second line */
 }
 </style>
 </head>
@@ -21,12 +47,20 @@
   <div class="mySlides fade">
     <img src="Blackberry (bl-ack-ber-ree).jpeg" style="width:100%">
     <div class="caption">Blackberry<br><span class="second-caption">bl-ack-ber-ree</span></div>
-    <audio id="audio-0" src="Blackberry 2024-05-26 13_59_15.mp3" preload="auto"></audio>
-    <div class="play-button" onclick="playAudio(0)">▶️</div>
+    <audio id="audio-0" src="Blackberry 2024-05-26 13_59_15.mp3"></audio>
   </div>
 
-  <!-- Repeat for other slides... -->
+  <div class="mySlides fade">
+    <img src="Banana (buh-NAH-nah).jpeg" style="width:100%">
+    <div class="caption">Banana<br><span class="second-caption">buh-NAH-nah</span></div>
+    <audio id="audio-1" src="Banana 2024-05-26 13_59_15.mp3"></audio>
+  </div>
 
+  <div class="mySlides fade">
+    <img src="Avocado (ah-vuh-CAH-doh).jpeg" style="width:100%">
+    <div class="caption">Avocado<br><span class="second-caption">ah-vuh-CAH-doh</span></div>
+    <audio id="audio-2" src="Avocado 2024-05-26 13_59_13.mp3"></audio>
+  </div>
 </div>
 
 <script>
@@ -34,19 +68,23 @@ let slideIndex = 0;
 showSlides();
 
 function showSlides() {
-  // Your existing showSlides function...
-}
+  let slides = document.getElementsByClassName("mySlides");
+  let audioElements = document.querySelectorAll("[id^='audio-']");
 
-function playAudio(index) {
-  const audioElements = document.querySelectorAll("[id^='audio-']");
-  audioElements.forEach((audio, i) => {
-    if (i === index) {
-      audio.play();
-    } else {
-      audio.pause();
-      audio.currentTime = 0; // Reset playback position
-    }
-  });
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+    audioElements[i].pause(); // Pause all audio initially
+  }
+
+  slideIndex++;
+  if (slideIndex > slides.length) {
+    slideIndex = 1;
+  }
+
+  slides[slideIndex - 1].style.display = "block";
+  audioElements[slideIndex - 1].play(); // Play audio for the current slide
+
+  setTimeout(showSlides, 4000); // Change slide every 4 seconds
 }
 </script>
 

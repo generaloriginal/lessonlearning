@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* Caption style */
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="slideshow-container">
+  <div class="mySlides fade">
+    <img src="Coconut.jpeg" style="width:100%">
+    <div class="caption">Coconut</div>
+    <audio id="audio-0" src="Açaí berry 2024-05-25 21_07_08.m4a"></audio>
+  </div>
+
+  <div class="mySlides fade">
+    <img src="Banana.jpeg" style="width:100%">
+    <div class="caption">Banana</div>
+    <audio id="audio-1" src="Banana 2024-05-25 21_06_44.m4a"></audio>
+  </div>
+
+  <div class="mySlides fade">
+    <img src="Avocado.jpeg" style="width:100%">
+    <div class="caption">Avocado</div>
+    <audio id="audio-2" src="Avocado 2024-05-25 21_06_58.m4a"></audio>
+  </div>
+</div>
+
+<script>
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  let slides = document.getElementsByClassName("mySlides");
+  let audioElements = document.querySelectorAll("[id^='audio-']");
+
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+    audioElements[i].pause(); // Pause all audio initially
+  }
+
+  slideIndex++;
+  if (slideIndex > slides.length) {
+    slideIndex = 1;
+  }
+
+  slides[slideIndex - 1].style.display = "block";
+  audioElements[slideIndex - 1].play(); // Play audio for the current slide
+
+  setTimeout(showSlides, 4000); // Change slide every 4 seconds
+}
+</script>
+
+</body>
+</html>

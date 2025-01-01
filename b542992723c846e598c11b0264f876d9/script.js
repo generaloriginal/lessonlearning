@@ -38,9 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Prepare AudioContext for iOS Safari
+    let audioContext;
     document.addEventListener("click", () => {
-        if (typeof window.AudioContext !== "undefined") {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (!audioContext && typeof window.AudioContext !== "undefined") {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
             if (audioContext.state === "suspended") {
                 audioContext.resume().then(() => console.log("AudioContext resumed"));
             }
@@ -92,8 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speech.onstart = () => console.log(`Speaking: ${word}`);
         speech.onend = () => console.log("Speech finished.");
         speech.onerror = (e) => console.error("Speech error:", e);
-        
-        // Slight delay for iOS reliability
-        setTimeout(() => speechSynthesis.speak(speech), 100);
+
+        speechSynthesis.speak(speech);
     }
 });

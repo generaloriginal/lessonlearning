@@ -11,11 +11,14 @@ body {
   
   .game-board {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Flexible grid */
     grid-gap: 15px;
     justify-content: center;
     margin-top: 30px;
-  }
+    max-width: 500px; /* Optional: Limit the grid width */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+}
   
   .card {
     width: 100px;

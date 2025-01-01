@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
       { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
       { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
       { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
+      { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
+      { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
+      { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
+      { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
       // Add more card pairs here
   ];
 

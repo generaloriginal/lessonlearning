@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "Tomato.jpeg"
     ];
 
-    // Randomly select 4 unique fruits for 8 tiles
-    function selectRandomFruits(files, count = 4) {
+    // Randomly select 6 unique fruits for 12 tiles
+    function selectRandomFruits(files, count = 6) {
         const shuffled = files.sort(() => 0.5 - Math.random()); // Shuffle files randomly
         return shuffled.slice(0, count); // Pick the first `count` items
     }

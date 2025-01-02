@@ -22,31 +22,24 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Audio enabled!");
     });
 
+    // Updated list of fruits
     const jpegFiles = [
-        "Avocado.jpeg",
-        "Açaí berry.jpeg",
-        "Banana.jpeg",
-        "Blackberry.jpeg",
-        "Cacau - cocoa.jpeg",
+        "Peach.jpeg",
+        "Orange.jpeg",
+        "Lychee.jpeg",
+        "Lime.jpeg",
+        "Lemon.jpeg",
+        "Jackfruit.jpeg",
+        "Guava.jpeg",
+        "Gooseberry.jpeg",
+        "Fig.jpeg",
         "Coconut.jpeg",
         "Cupuaçu.jpeg",
-        "Fig.jpeg",
-        "Gooseberry - groselha.jpeg",
-        "Guava - goiaba.jpeg",
-        "Jackfruit - jaca.jpeg",
-        "Kiwi.jpeg",
-        "Lemon.jpeg",
-        "Lime.jpeg",
-        "Lychee - lichia.jpeg",
-        "Orange.jpeg",
-        "Peach.jpeg",
-        "Pineapple.jpeg",
-        "Plum.jpeg",
-        "Plum 2.jpeg",
-        "Prunes.jpeg",
-        "Raspberry.jpeg",
-        "Soursop - graviola.jpeg",
-        "Tomato.jpeg"
+        "Acai berry.jpeg",
+        "Avocado.jpeg",
+        "Banana.jpeg",
+        "Blackberry.jpeg",
+        "Cacau.jpeg"
     ];
 
     function selectRandomFruits(files, count = 6) {
@@ -88,5 +81,17 @@ document.addEventListener("DOMContentLoaded", () => {
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
+    }
+
+    function speakWord(word) {
+        if (!window.speechSynthesis) {
+            console.error("SpeechSynthesis not supported in this browser.");
+            return;
+        }
+
+        const speech = new SpeechSynthesisUtterance(word);
+        speech.rate = 1;
+        speech.pitch = 1;
+        speechSynthesis.speak(speech);
     }
 });

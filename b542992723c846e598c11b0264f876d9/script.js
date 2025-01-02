@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     let audioEnabled = false;
 
-    // Add a prompt to enable audio on iOS
     const enableAudioButton = document.createElement("button");
     enableAudioButton.innerText = "Enable Audio";
     enableAudioButton.style.position = "absolute";
@@ -23,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Audio enabled!");
     });
 
-    // JSON list of .jpeg files
     const jpegFiles = [
         "Avocado.jpeg",
         "Açaí berry.jpeg",
@@ -51,10 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "Tomato.jpeg"
     ];
 
-    // Randomly select 6 unique fruits for 12 tiles
     function selectRandomFruits(files, count = 6) {
-        const shuffled = files.sort(() => 0.5 - Math.random()); // Shuffle files randomly
-        const selected = shuffled.slice(0, count); // Pick the first `count` items
+        const shuffled = files.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, count);
         console.log("Selected fruits:", selected); // Debug log
         return selected;
     }
@@ -66,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     console.log("Card data before duplication:", cardData); // Debug log
 
-    const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for matching pairs
+    const shuffledCards = shuffle([...cardData, ...cardData]);
     console.log("Shuffled cards:", shuffledCards); // Debug log
 
     const gameBoard = document.querySelector(".game-board");
@@ -85,53 +82,11 @@ document.addEventListener("DOMContentLoaded", () => {
         gameBoard.appendChild(cardElement);
     });
 
-    const cards = document.querySelectorAll(".card");
-    let flippedCard = null;
-    let lockBoard = false;
-
-    cards.forEach((card) => {
-        card.addEventListener("click", () => {
-            if (lockBoard || card.classList.contains("flipped") || !audioEnabled) return;
-
-            card.classList.add("flipped");
-            speakWord(card.dataset.word.split('-')[0]);
-
-            if (!flippedCard) {
-                flippedCard = card;
-                return;
-            }
-
-            if (flippedCard.dataset.word.split('-')[0] === card.dataset.word.split('-')[0]) {
-                flippedCard = null;
-            } else {
-                lockBoard = true;
-                setTimeout(() => {
-                    card.classList.remove("flipped");
-                    flippedCard.classList.remove("flipped");
-                    flippedCard = null;
-                    lockBoard = false;
-                }, 1000);
-            }
-        });
-    });
-
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
-    }
-
-    function speakWord(word) {
-        if (!window.speechSynthesis) {
-            console.error("SpeechSynthesis not supported in this browser.");
-            return;
-        }
-
-        const speech = new SpeechSynthesisUtterance(word);
-        speech.rate = 1;
-        speech.pitch = 1;
-        speechSynthesis.speak(speech);
     }
 });

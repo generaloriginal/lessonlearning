@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Audio enabled!");
     });
 
-    // Updated list of fruits
     const jpegFiles = [
         "Peach.jpeg",
         "Orange.jpeg",
@@ -73,6 +72,39 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
         gameBoard.appendChild(cardElement);
+    });
+
+    const cards = document.querySelectorAll(".card");
+    let flippedCard = null;
+    let lockBoard = false;
+
+    cards.forEach(card => {
+        card.addEventListener("click", () => {
+            if (lockBoard || card.classList.contains("flipped") || !audioEnabled) return;
+
+            console.log(`Card clicked: ${card.dataset.word}`); // Debug log
+
+            card.classList.add("flipped");
+
+            if (!flippedCard) {
+                flippedCard = card;
+                return;
+            }
+
+            if (flippedCard.dataset.word === card.dataset.word) {
+                // Match found, keep cards flipped
+                flippedCard = null;
+            } else {
+                // No match, flip cards back after a delay
+                lockBoard = true;
+                setTimeout(() => {
+                    card.classList.remove("flipped");
+                    flippedCard.classList.remove("flipped");
+                    flippedCard = null;
+                    lockBoard = false;
+                }, 1000);
+            }
+        });
     });
 
     function shuffle(array) {

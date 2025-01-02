@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (flippedCard.dataset.word === card.dataset.word) {
                 // Match found, keep cards flipped
+                console.log(`Match found: ${flippedCard.dataset.word}`);
                 flippedCard.classList.add("matched");
                 card.classList.add("matched");
                 flippedCard = null; // Reset for the next match

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     let audioEnabled = false;
 
     // Add a prompt to enable audio on iOS
@@ -23,18 +23,27 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Audio enabled!");
     });
 
-    const cardData = [
-        { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
-        { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
-        { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
-        { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
-        { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
-        { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
-        { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
-        { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
-    ];
+    // Function to fetch file names from the server
+    async function fetchFileNames() {
+        // This assumes you have a backend serving the folder's file names (e.g., using a static server or an API).
+        // Replace the URL below with the actual endpoint that lists the files in your folder.
+        const response = await fetch("file-list.json");
+        if (!response.ok) {
+            console.error("Failed to fetch file list");
+            return [];
+        }
+        const files = await response.json();
+        return files.filter(file => file.endsWith(".jpeg"));
+    }
 
-    // Shuffle and render cards logic remains the same
+    // Fetch file names dynamically
+    const jpegFiles = await fetchFileNames();
+    const cardData = jpegFiles.map(file => {
+        const word = file.replace(".jpeg", "").replace(/[_-]/g, " "); // Remove extension and replace underscores/dashes with spaces
+        return { word, img: file };
+    });
+
+    // Shuffle and render cards
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -43,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return array;
     }
 
-    const shuffledCards = shuffle([...cardData]);
+    const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for pairs
     const gameBoard = document.querySelector(".game-board");
 
     shuffledCards.forEach((card, index) => {

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     let audioEnabled = false;
 
     // Add a prompt to enable audio on iOS
@@ -23,16 +23,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Audio enabled!");
     });
 
-    // Fetch file names dynamically
-    async function fetchFileNames() {
-        const response = await fetch("file-list.json");
-        if (!response.ok) {
-            console.error("Failed to fetch file list");
-            return [];
-        }
-        const files = await response.json();
-        return files.filter(file => file.toLowerCase().endsWith(".jpeg")); // Case-insensitive filtering
-    }
+    // JSON list of .jpeg files
+    const jpegFiles = [
+        "Avocado.jpeg",
+        "Açaí berry.jpeg",
+        "Banana.jpeg",
+        "Blackberry.jpeg",
+        "Cacau - cocoa.jpeg",
+        "Coconut.jpeg",
+        "Cupuaçu.jpeg",
+        "Fig.jpeg",
+        "Gooseberry - groselha.jpeg",
+        "Guava - goiaba.jpeg",
+        "Jackfruit - jaca.jpeg",
+        "Kiwi.jpeg",
+        "Lemon.jpeg",
+        "Lime.jpeg",
+        "Lychee - lichia.jpeg",
+        "Orange.jpeg",
+        "Peach.jpeg",
+        "Pineapple.jpeg",
+        "Plum.jpeg",
+        "Plum 2.jpeg",
+        "Prunes.jpeg",
+        "Raspberry.jpeg",
+        "Soursop - graviola.jpeg",
+        "Tomato.jpeg"
+    ];
 
     // Randomly select 4 unique fruits for 8 tiles
     function selectRandomFruits(files, count = 4) {
@@ -40,38 +57,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         return shuffled.slice(0, count); // Pick the first `count` items
     }
 
-    // Fetch and process the file list
-    const jpegFiles = await fetchFileNames();
-    if (jpegFiles.length < 4) {
-        console.error("Not enough .jpeg files to create the game!");
-        return;
-    }
-
-    const selectedFruits = selectRandomFruits(jpegFiles); // Select 4 random fruits
+    const selectedFruits = selectRandomFruits(jpegFiles);
     const cardData = selectedFruits.map(file => {
-        const word = file
-            .replace(".jpeg", "")
-            .replace(/[_-]/g, " ")
-            .trim(); // Remove extension and format the word
+        const word = file.replace(".jpeg", "").replace(/[_-]/g, " ").trim();
         return { word, img: file };
     });
 
-    // Duplicate the selected fruits to create pairs
-    const duplicatedCards = [...cardData, ...cardData];
-
-    // Shuffle the 8 cards
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    const shuffledCards = shuffle(duplicatedCards);
+    const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for matching pairs
     const gameBoard = document.querySelector(".game-board");
 
-    // Render the cards on the game board
     shuffledCards.forEach((card, index) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");
@@ -86,7 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         gameBoard.appendChild(cardElement);
     });
 
-    // Game logic
     const cards = document.querySelectorAll(".card");
     let flippedCard = null;
     let lockBoard = false;
@@ -117,6 +110,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
     function speakWord(word) {
         if (!window.speechSynthesis) {
             console.error("SpeechSynthesis not supported in this browser.");
@@ -124,8 +125,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const speech = new SpeechSynthesisUtterance(word);
-        speech.rate = 1; // Normal speed
-        speech.pitch = 1; // Normal pitch
+        speech.rate = 1;
+        speech.pitch = 1;
         speechSynthesis.speak(speech);
     }
 });

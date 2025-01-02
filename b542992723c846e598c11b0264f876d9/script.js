@@ -43,21 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function selectRandomFruits(files, count = 6) {
         const shuffled = files.sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, count);
-        console.log("Selected fruits:", selected); // Debug log
-        return selected;
+        return shuffled.slice(0, count);
     }
 
     const selectedFruits = selectRandomFruits(jpegFiles);
-    const cardData = selectedFruits.map(file => {
-        const word = file.replace(".jpeg", "").replace(/[_-]/g, " ").trim();
-        return { word, img: file };
-    });
-    console.log("Card data before duplication:", cardData); // Debug log
+    const cardData = selectedFruits.map(file => ({
+        word: file.replace(".jpeg", "").replace(/[_-]/g, " ").trim(),
+        img: file
+    }));
 
     const shuffledCards = shuffle([...cardData, ...cardData]);
-    console.log("Shuffled cards:", shuffledCards); // Debug log
-
     const gameBoard = document.querySelector(".game-board");
 
     shuffledCards.forEach((card, index) => {
@@ -82,8 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => {
             if (lockBoard || card.classList.contains("flipped") || card.classList.contains("matched") || !audioEnabled) return;
 
-            console.log(`Card clicked: ${card.dataset.word}`); // Debug log
-
             card.classList.add("flipped");
 
             if (!flippedCard) {
@@ -92,16 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             if (flippedCard.dataset.word === card.dataset.word) {
-                // Match found, mark as matched
+                // Match found, keep cards flipped
                 flippedCard.classList.add("matched");
                 card.classList.add("matched");
-                flippedCard = null;
+                flippedCard = null; // Reset for the next match
             } else {
-                // No match, flip cards back after a delay
+                // No match, flip back after a short delay
                 lockBoard = true;
                 setTimeout(() => {
-                    card.classList.remove("flipped");
                     flippedCard.classList.remove("flipped");
+                    card.classList.remove("flipped");
                     flippedCard = null;
                     lockBoard = false;
                 }, 1000);

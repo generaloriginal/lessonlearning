@@ -89,6 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Match found, keep cards flipped
                 flippedCard.classList.add("matched");
                 card.classList.add("matched");
+
+                // Say "Match!" when a pair is found
+                speakWord("Match!");
                 flippedCard = null; // Reset for the next match
             } else {
                 // No match, flip back after a short delay

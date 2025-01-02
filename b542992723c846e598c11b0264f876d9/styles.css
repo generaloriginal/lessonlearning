@@ -3,13 +3,13 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f4f4f9;
-  }
-  
-  h1 {
+}
+
+h1 {
     margin-top: 20px;
-  }
-  
-  .game-board {
+}
+
+.game-board {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Flexible grid */
     grid-gap: 15px;
@@ -19,16 +19,17 @@ body {
     margin-left: auto; /* Center align */
     margin-right: auto; /* Center align */
 }
-  
-  .card {
+
+.card {
     width: 100px;
     height: 150px;
     perspective: 1000px;
     cursor: pointer;
-  }
-  
-  .card .front,
-  .card .back {
+    position: relative; /* Ensure proper alignment */
+}
+
+.card .front,
+.card .back {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -38,29 +39,35 @@ body {
     align-items: center;
     border: 1px solid #ccc;
     border-radius: 8px;
-  }
-  
-  .card .front {
+    transition: transform 0.6s ease-in-out; /* Smooth flip */
+}
+
+.card .front {
     background-color: #3498db;
     color: white;
     font-size: 24px;
-  }
-  
-  .card .back {
+}
+
+.card .back {
     background-color: white;
     transform: rotateY(180deg);
     flex-direction: column;
-  }
-  
-  .card img {
+}
+
+.card img {
     max-width: 80px;
     max-height: 80px;
-  }
-  
-  .card.flipped .front {
+    background-color: #f9f9f9; /* Fallback background */
+}
+
+.card.flipped .front {
     transform: rotateY(180deg);
-  }
-  
-  .card.flipped .back {
+}
+
+.card.flipped .back {
     transform: rotateY(0);
-  }
+}
+
+.card:hover .front {
+    background-color: #2980b9; /* Hover effect */
+}

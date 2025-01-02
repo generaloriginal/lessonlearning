@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -15,9 +14,9 @@ h1 {
     grid-gap: 15px;
     justify-content: center;
     margin-top: 30px;
-    max-width: 600px; /* Slightly increase max width */
-    margin-left: auto; /* Center align */
-    margin-right: auto; /* Center align */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .card {
@@ -26,6 +25,7 @@ h1 {
     perspective: 1000px;
     cursor: pointer;
     position: relative; /* Ensure proper alignment */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Improved visibility */
 }
 
 .card .front,
@@ -70,4 +70,16 @@ h1 {
 
 .card:hover .front {
     background-color: #2980b9; /* Hover effect */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .game-board {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller screens */
+    }
+
+    .card {
+        width: 80px;
+        height: 120px;
+    }
 }

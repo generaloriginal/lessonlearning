@@ -68,8 +68,31 @@ h1 {
     transform: rotateY(0);
 }
 
+/* Styles for matched cards */
+.card.matched .front {
+    transform: rotateY(180deg);
+    background-color: #4CAF50; /* Green for matched cards */
+    cursor: default;
+}
+
+.card.matched .back {
+    transform: rotateY(0deg);
+    background-color: #f4f4f9;
+    cursor: default;
+}
+
+.card.matched {
+    opacity: 0.8; /* Dims matched cards */
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.5); /* Green glow */
+}
+
 .card:hover .front {
     background-color: #2980b9; /* Hover effect */
+}
+
+/* Disable hover effect on matched cards */
+.card.matched:hover {
+    background-color: inherit;
 }
 
 /* Responsive Design */

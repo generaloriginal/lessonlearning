@@ -23,10 +23,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Audio enabled!");
     });
 
-    // Function to fetch file names from the server
+    // Dynamically fetch JPEG files (this requires a backend or pre-generated list)
     async function fetchFileNames() {
-        // This assumes you have a backend serving the folder's file names (e.g., using a static server or an API).
-        // Replace the URL below with the actual endpoint that lists the files in your folder.
+        // Replace this endpoint with your file listing mechanism
         const response = await fetch("file-list.json");
         if (!response.ok) {
             console.error("Failed to fetch file list");
@@ -36,10 +35,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         return files.filter(file => file.endsWith(".jpeg"));
     }
 
-    // Fetch file names dynamically
+    // Generate card data dynamically from the fetched file list
     const jpegFiles = await fetchFileNames();
     const cardData = jpegFiles.map(file => {
-        const word = file.replace(".jpeg", "").replace(/[_-]/g, " "); // Remove extension and replace underscores/dashes with spaces
+        const word = file.replace(".jpeg", "").replace(/[_-]/g, " "); // Remove extension and clean up
         return { word, img: file };
     });
 
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return array;
     }
 
-    const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for pairs
+    const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for matching pairs
     const gameBoard = document.querySelector(".game-board");
 
     shuffledCards.forEach((card, index) => {
@@ -69,6 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         gameBoard.appendChild(cardElement);
     });
 
+    // Game logic
     const cards = document.querySelectorAll(".card");
     let flippedCard = null;
     let lockBoard = false;

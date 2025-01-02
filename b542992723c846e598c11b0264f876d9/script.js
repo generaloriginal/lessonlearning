@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Randomly select 6 unique fruits for 12 tiles
     function selectRandomFruits(files, count = 6) {
         const shuffled = files.sort(() => 0.5 - Math.random()); // Shuffle files randomly
-        return shuffled.slice(0, count); // Pick the first `count` items
+        const selected = shuffled.slice(0, count); // Pick the first `count` items
+        console.log("Selected fruits:", selected); // Debug log
+        return selected;
     }
 
     const selectedFruits = selectRandomFruits(jpegFiles);
@@ -62,8 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const word = file.replace(".jpeg", "").replace(/[_-]/g, " ").trim();
         return { word, img: file };
     });
+    console.log("Card data before duplication:", cardData); // Debug log
 
     const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for matching pairs
+    console.log("Shuffled cards:", shuffledCards); // Debug log
+
     const gameBoard = document.querySelector(".game-board");
 
     shuffledCards.forEach((card, index) => {

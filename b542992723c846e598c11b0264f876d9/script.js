@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
         { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
         { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
-        { word: "Blueberry", img: "Blueberry.jpeg" },
-        { word: "Blueberry", img: "Blueberry.jpeg" },
-        { word: "Cherry", img: "Cherry.jpeg" },
-        { word: "Cherry", img: "Cherry.jpeg" }
+        { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
+        { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
+        { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
+        { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
     ];
 
     // Shuffle function (Fisher-Yates Shuffle)

@@ -114,16 +114,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         return array;
     }
-
-    function speakWord(word) {
-        if (!window.speechSynthesis) {
-            console.error("SpeechSynthesis not supported in this browser.");
-            return;
-        }
-
-        const speech = new SpeechSynthesisUtterance(word);
-        speech.rate = 1;
-        speech.pitch = 1;
-        speechSynthesis.speak(speech);
-    }
 });

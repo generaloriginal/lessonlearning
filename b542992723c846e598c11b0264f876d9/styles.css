@@ -15,7 +15,7 @@ h1 {
     grid-gap: 15px;
     justify-content: center;
     margin-top: 30px;
-    max-width: 500px; /* Optional: Limit the grid width */
+    max-width: 600px; /* Slightly increase max width */
     margin-left: auto; /* Center align */
     margin-right: auto; /* Center align */
 }

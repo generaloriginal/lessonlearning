@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (lockBoard || card.classList.contains("flipped") || card.classList.contains("matched") || !audioEnabled) return;
 
             card.classList.add("flipped");
+            speakWord(card.dataset.word);
 
             if (!flippedCard) {
                 flippedCard = card;
@@ -86,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (flippedCard.dataset.word === card.dataset.word) {
                 // Match found, keep cards flipped
-                console.log(`Match found: ${flippedCard.dataset.word}`);
                 flippedCard.classList.add("matched");
                 card.classList.add("matched");
                 flippedCard = null; // Reset for the next match
@@ -102,6 +102,24 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    function speakWord(word) {
+        if (!window.speechSynthesis) {
+            console.error("SpeechSynthesis not supported in this browser.");
+            return;
+        }
+
+        if (!audioEnabled) {
+            console.warn("Audio is not enabled yet.");
+            return;
+        }
+
+        console.log(`Attempting to speak: ${word}`);
+        const speech = new SpeechSynthesisUtterance(word);
+        speech.rate = 1; // Normal speed
+        speech.pitch = 1; // Normal pitch
+        window.speechSynthesis.speak(speech);
+    }
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {

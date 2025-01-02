@@ -23,26 +23,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Audio enabled!");
     });
 
-    // Dynamically fetch JPEG files (this requires a backend or pre-generated list)
+    // Fetch file names dynamically
     async function fetchFileNames() {
-        // Replace this endpoint with your file listing mechanism
         const response = await fetch("file-list.json");
         if (!response.ok) {
             console.error("Failed to fetch file list");
             return [];
         }
         const files = await response.json();
-        return files.filter(file => file.endsWith(".jpeg"));
+        return files.filter(file => file.toLowerCase().endsWith(".jpeg")); // Case-insensitive filtering
     }
 
-    // Generate card data dynamically from the fetched file list
+    // Randomly select 4 unique fruits for 8 tiles
+    function selectRandomFruits(files, count = 4) {
+        const shuffled = files.sort(() => 0.5 - Math.random()); // Shuffle files randomly
+        return shuffled.slice(0, count); // Pick the first `count` items
+    }
+
+    // Fetch and process the file list
     const jpegFiles = await fetchFileNames();
-    const cardData = jpegFiles.map(file => {
-        const word = file.replace(".jpeg", "").replace(/[_-]/g, " "); // Remove extension and clean up
+    if (jpegFiles.length < 4) {
+        console.error("Not enough .jpeg files to create the game!");
+        return;
+    }
+
+    const selectedFruits = selectRandomFruits(jpegFiles); // Select 4 random fruits
+    const cardData = selectedFruits.map(file => {
+        const word = file
+            .replace(".jpeg", "")
+            .replace(/[_-]/g, " ")
+            .trim(); // Remove extension and format the word
         return { word, img: file };
     });
 
-    // Shuffle and render cards
+    // Duplicate the selected fruits to create pairs
+    const duplicatedCards = [...cardData, ...cardData];
+
+    // Shuffle the 8 cards
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -51,9 +68,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         return array;
     }
 
-    const shuffledCards = shuffle([...cardData, ...cardData]); // Duplicate cards for matching pairs
+    const shuffledCards = shuffle(duplicatedCards);
     const gameBoard = document.querySelector(".game-board");
 
+    // Render the cards on the game board
     shuffledCards.forEach((card, index) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");

@@ -1,4 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
+    let audioEnabled = false;
+
+    // Add a prompt to enable audio on iOS
+    const enableAudioButton = document.createElement("button");
+    enableAudioButton.innerText = "Enable Audio";
+    enableAudioButton.style.position = "absolute";
+    enableAudioButton.style.top = "10px";
+    enableAudioButton.style.left = "50%";
+    enableAudioButton.style.transform = "translateX(-50%)";
+    enableAudioButton.style.padding = "10px 20px";
+    enableAudioButton.style.backgroundColor = "#4CAF50";
+    enableAudioButton.style.color = "white";
+    enableAudioButton.style.border = "none";
+    enableAudioButton.style.borderRadius = "5px";
+    enableAudioButton.style.cursor = "pointer";
+
+    document.body.appendChild(enableAudioButton);
+
+    enableAudioButton.addEventListener("click", () => {
+        audioEnabled = true;
+        document.body.removeChild(enableAudioButton);
+        console.log("Audio enabled!");
+    });
+
     const cardData = [
         { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
         { word: "Avocado", img: "Avocado (ah-vuh-CAH-doh).jpeg" },
@@ -10,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { word: "Blackberry", img: "Blackberry (bl-ack-ber-ree).jpeg" },
     ];
 
-    // Shuffle function (Fisher-Yates Shuffle)
+    // Shuffle and render cards logic remains the same
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -22,11 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const shuffledCards = shuffle([...cardData]);
     const gameBoard = document.querySelector(".game-board");
 
-    // Render cards dynamically
     shuffledCards.forEach((card, index) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");
-        cardElement.setAttribute("data-word", `${card.word}-${index}`); // Unique attribute for duplicates
+        cardElement.setAttribute("data-word", `${card.word}-${index}`);
         cardElement.innerHTML = `
             <div class="front">?</div>
             <div class="back">
@@ -37,35 +60,22 @@ document.addEventListener("DOMContentLoaded", () => {
         gameBoard.appendChild(cardElement);
     });
 
-    // Prepare AudioContext for iOS Safari
-    let audioContext;
-    document.addEventListener("click", () => {
-        if (!audioContext && typeof window.AudioContext !== "undefined") {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioContext.state === "suspended") {
-                audioContext.resume().then(() => console.log("AudioContext resumed"));
-            }
-        }
-    });
-
-    // Game Logic
     const cards = document.querySelectorAll(".card");
     let flippedCard = null;
     let lockBoard = false;
 
     cards.forEach((card) => {
         card.addEventListener("click", () => {
-            if (lockBoard || card.classList.contains("flipped")) return;
+            if (lockBoard || card.classList.contains("flipped") || !audioEnabled) return;
 
             card.classList.add("flipped");
-            speakWord(card.dataset.word.split('-')[0]); // Use only the word part for speech
+            speakWord(card.dataset.word.split('-')[0]);
 
             if (!flippedCard) {
                 flippedCard = card;
                 return;
             }
 
-            // Match check
             if (flippedCard.dataset.word.split('-')[0] === card.dataset.word.split('-')[0]) {
                 flippedCard = null;
             } else {
@@ -80,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Function to speak the word with added debug logs
     function speakWord(word) {
         if (!window.speechSynthesis) {
             console.error("SpeechSynthesis not supported in this browser.");
@@ -90,10 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const speech = new SpeechSynthesisUtterance(word);
         speech.rate = 1; // Normal speed
         speech.pitch = 1; // Normal pitch
-        speech.onstart = () => console.log(`Speaking: ${word}`);
-        speech.onend = () => console.log("Speech finished.");
-        speech.onerror = (e) => console.error("Speech error:", e);
-
         speechSynthesis.speak(speech);
     }
 });

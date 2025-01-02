@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     shuffledCards.forEach((card, index) => {
         const cardElement = document.createElement("div");
         cardElement.classList.add("card");
-        cardElement.setAttribute("data-word", `${card.word}-${index}`);
+        cardElement.setAttribute("data-word", card.word);
         cardElement.innerHTML = `
             <div class="front">?</div>
             <div class="back">
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cards.forEach(card => {
         card.addEventListener("click", () => {
-            if (lockBoard || card.classList.contains("flipped") || !audioEnabled) return;
+            if (lockBoard || card.classList.contains("flipped") || card.classList.contains("matched") || !audioEnabled) return;
 
             console.log(`Card clicked: ${card.dataset.word}`); // Debug log
 
@@ -92,7 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             if (flippedCard.dataset.word === card.dataset.word) {
-                // Match found, keep cards flipped
+                // Match found, mark as matched
+                flippedCard.classList.add("matched");
+                card.classList.add("matched");
                 flippedCard = null;
             } else {
                 // No match, flip cards back after a delay
